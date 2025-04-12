@@ -1,13 +1,15 @@
+import { getTimePercentage } from "../utils"
+
 function Clock(props) {
-    const { clock, clockIndex, data } = props
+    const {percent, data, title} = props
     return (
-        <div key={clockIndex} className="card clock-card">
-            <div className="circle" style={{}}>
-                <div className={"ticker" + " "}></div>
+        <div className="card clock-card">
+            <div className="circle" style={{ transform: `rotate(${Math.round(percent)}deg)` }}>
+                <div className={"ticker " + title}></div>
             </div>
             <div>
-                <h5>{data[clock]}</h5>
-                <p>{clock}</p>
+                <h5>{data}</h5>
+                <p>{title}</p>
             </div>
         </div>
     )
@@ -15,13 +17,14 @@ function Clock(props) {
 
 export default function Clocks(props) {
     const { data } = props
+    const snapshot = getTimePercentage(data)
     return (
         <section id="clocks">
             <p><i>Time remaining in different units.</i></p>
             <div className="clocks-grid">
                 {Object.keys(data).map((clock, clockIndex) => {
                     return (
-                        Clocks({ clock, clockIndex, data })
+                        <Clock data={data[clock]} title={clock} key={clockIndex} percent = {snapshot[clock]}/>
                     )
                 })}
             </div>
